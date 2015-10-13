@@ -21,23 +21,25 @@ func computeHmac256(message string, secret string) string {
 }
 
 // Appends a '.' and then a signature to 'val', calculated using the provided secret
-func SignCookie(val string, secret string) string {
+func Sign(val string, secret string) string {
 	return val + "." + computeHmac256(val, secret)
 }
 
 // Extracts the value (the part of the string before the '.') from val. 'Valid' is true
 // if the signature is valid, otherwise false.
-func UnsignCookie(val string, secret string) (str string, valid bool) {
+func Unsign(val string, secret string) (str string, valid bool) {
 	// cookie must begin with "s:"
-	if !strings.HasPrefix(val, "s:") {
-		valid = false
-		return
-	}
-	val = val[2:]
+	/*
+		if !strings.HasPrefix(val, "s:") {
+			valid = false
+			return
+		}
+		val = val[2:]
+	*/
 	log.Printf("unsign val=%s", val)
 	str = strings.Split(val, ".")[0]
 	log.Printf("unsign str=%s", str)
-	signed := SignCookie(str, secret)
+	signed := Sign(str, secret)
 	log.Printf("unsign signed=%s", signed)
 
 	/*
