@@ -4,7 +4,7 @@ package signature_test
 import (
 	"testing"
 
-	"github.com/mattbarton/node-cookie-signature/signature"
+	"github.com/mattbarton/go-cookie-signature/signature"
 )
 
 func TestSignCookie(t *testing.T) {
