@@ -8,7 +8,6 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/base64"
-	"log"
 	"strings"
 )
 
@@ -28,24 +27,12 @@ func Sign(val string, secret string) string {
 // Extracts the value (the part of the string before the '.') from val. 'Valid' is true
 // if the signature is valid, otherwise false.
 func Unsign(val string, secret string) (str string, valid bool) {
-	// cookie must begin with "s:"
-	/*
-		if !strings.HasPrefix(val, "s:") {
-			valid = false
-			return
-		}
-		val = val[2:]
-	*/
-	log.Printf("unsign val=%s", val)
 	str = strings.Split(val, ".")[0]
-	log.Printf("unsign str=%s", str)
 	signed := Sign(str, secret)
-	log.Printf("unsign signed=%s", signed)
 
-	/*
-	   In certain cases, information can be leaked by using a timing attack. It takes advantage of the == operator only comparing until it finds a difference in the two strings. To prevent it,
-	       hash both hashed strings first - this doesn't stop the timing difference, but it makes the information useless.
-	*/
+	// In certain cases, information can be leaked by using a timing attack.
+	// It takes advantage of the == operator only comparing until it finds a difference in the two strings. To prevent it,
+	// hash both hashed strings first - this doesn't stop the timing difference, but it makes the information useless.
 	valid = sha1.Sum([]byte(signed)) == sha1.Sum([]byte(val))
 	return
 }
